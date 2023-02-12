@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, Text, View} from 'react-native';
-
+import { NativeBaseProvider, VStack, Center } from "native-base";
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
@@ -24,6 +24,8 @@ const App = () => {
   }, []);
 
   return (
+    <NativeBaseProvider>
+      
     <View style={{flex: 1, padding: 24}}>
       {isLoading ? (
         <ActivityIndicator />
@@ -33,13 +35,18 @@ const App = () => {
           keyExtractor={({id}) => id}
           renderItem={({item}) => {
             return (
-            <Text>
-              {item.name}, {item.symbol},{item.price_usd}
-            </Text>
+            <VStack space={4} alignItems="center">
+              <Center display="flex" flexDirection="row" justifyContent="space-between" w="100%" h="10" borderWidth="2" borderColor="#ccc" rounded="md">
+                <Text>{item.name}</Text>
+                <Text>{item.symbol}</Text>  
+                <Text>{item.price_usd}</Text>
+              </Center>
+            </VStack>
           )}}
         />
       )}
     </View>
+    </NativeBaseProvider>
   );
 };
 
