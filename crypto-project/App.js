@@ -1,14 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, Text, View} from 'react-native';
-import { NativeBaseProvider, VStack, Center } from "native-base";
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { NativeBaseProvider, Center, Box, HStack, Heading, Text,ScrollView } from "native-base";
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-
   const getCoins = async () => {
     try {
-      const response = await fetch('https://api.coinlore.net/api/tickers/?start=0&limit=10');
+      const response = await fetch('https://api.coinlore.net/api/tickers/?start=0&limit=15');
       const json = await response.json();
       setData(json.data);
       // console.log(json.data);
@@ -18,34 +17,46 @@ const App = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     getCoins();
   }, []);
 
+
+  const DataBox = () => {
+    return (
+      <ScrollView>
+        <HStack >
+          <Center p="4" m="2" marginTop="5" width="100%"><Heading size="md">Cryptocurrencies</Heading></Center>
+        </HStack>
+        <HStack p="2" space="3" rounded="md" alignItems="center" width="100%" display="flex" flexDirection="row" justifyContent="space-between" height="10" >
+          <Center w="30%" fontSize="xs">Coin</Center>
+          <Center w="30%" fontSize="xs">Symbol</Center>
+          <Center w="30%" fontSize="xs">Price_USD</Center>
+        </HStack>
+        {data.map((item, k) => {
+          return (
+            <HStack key={k} p="4" m="1" space="3" rounded="md" width="100%" display="flex" flexDirection="row" justifyContent="space-between" alignSelf='center'borderWidth="2" borderColor="muted.300">
+              <Text w="35%" bold fontSize="md">{item.name}</Text>
+              <Text w="25%" fontSize="md">{item.symbol}</Text>
+              <Text w="25%" textAlign="right" bold fontSize="md">{item.price_usd}</Text>
+            </HStack>
+          )
+        })
+        }
+      </ScrollView>
+    )
+  };
+
+
   return (
     <NativeBaseProvider>
-      
-    <View style={{flex: 1, padding: 24}}>
-      {isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <FlatList
-          data={data}
-          keyExtractor={({id}) => id}
-          renderItem={({item}) => {
-            return (
-            <VStack space={4} alignItems="center">
-              <Center display="flex" flexDirection="row" justifyContent="space-between" w="100%" h="10" borderWidth="2" borderColor="#ccc" rounded="md">
-                <Text>{item.name}</Text>
-                <Text>{item.symbol}</Text>  
-                <Text>{item.price_usd}</Text>
-              </Center>
-            </VStack>
-          )}}
-        />
-      )}
-    </View>
+      <View style={{ flex: 1, padding: 24 }}>
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <DataBox />
+        )}
+      </View>
     </NativeBaseProvider>
   );
 };
