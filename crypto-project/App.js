@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { NativeBaseProvider, Center, Box, HStack, Heading, Text,ScrollView } from "native-base";
+import { NativeBaseProvider, Center, Box, HStack, Heading, Text,ScrollView,Image } from "native-base";
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
@@ -29,15 +29,16 @@ const App = () => {
           <Center p="4" m="2" marginTop="5" width="100%"><Heading size="md">Cryptocurrencies</Heading></Center>
         </HStack>
         <HStack p="2" space="3" rounded="md" alignItems="center" width="100%" display="flex" flexDirection="row" justifyContent="space-between" height="10" >
-          <Center w="30%" fontSize="xs">Coin</Center>
-          <Center w="30%" fontSize="xs">Symbol</Center>
-          <Center w="30%" fontSize="xs">Price_USD</Center>
+          <Center w="40%" fontSize="xs">Coin</Center>
+          <Center w="25%" fontSize="xs">Symbol</Center>
+          <Center w="25%" fontSize="xs">Price_USD</Center>
         </HStack>
         {data.map((item, k) => {
           return (
             <HStack key={k} p="4" m="1" space="3" rounded="md" width="100%" display="flex" flexDirection="row" justifyContent="space-between" alignSelf='center'borderWidth="2" borderColor="muted.300">
-              <Text w="35%" bold fontSize="md">{item.name}</Text>
-              <Text w="25%" fontSize="md">{item.symbol}</Text>
+              <Text w="45%" bold fontSize="md" >
+              <Image style={{height: 20, width: 20, marginRight:4}} source={{uri: `https://www.coinlore.com/img/${item.nameid}.webp`}}/>{item.name}</Text>
+              <Text w="20%" fontSize="md">{item.symbol}</Text>
               <Text w="25%" textAlign="right" bold fontSize="md">{item.price_usd}</Text>
             </HStack>
           )
